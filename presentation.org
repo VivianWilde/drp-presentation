@@ -1,0 +1,154 @@
+#+title: DRP Presentation: Spectral Graph Theory
+#+latex_header: \usepackage{header}
+* Expander Graphs
+- Expanders are sparse highly-connected graphs.
+- Constant degree ($k$ regular, or close to that)
+- An expander graph on $n$ vertices has $O(n)$ edges and diameter $O(log(n))$.
+- Sparsification is the problem of how can we remove edges from a graph while retaining high conductance - i.e, the process of turning non-expander graphs into expander graphs.
+* Spectral Graph Theory
+- A graph is an adjacency matrix with real-valued entries.
+- Undirected graphs have symmetric matrices, so spectral theorem applies and we have a basis of eigenvectors.
+- We can encode a graph as a matrix and then analyse the spectrum (eigenvals/eigenvecs )
+# - The multiplicity of the $0$ eigenvalue measures the number of connected components.
+# - $Lx=0$ requires $x_i=x_j$ whenever $i,j$ in the same component, and an orthogonal set of (nonzero) vectors which all satisfy this are the indicator vectors for the connected components.
+# ** Cool Stuff
+# - Adjacency matrix (divided by degree) raised to powers gets you the random walk distribution.
+# - So if $R=D^{-1}A$, $R^k_{i,j}$ is the probability that a $k$ step walk from $i$ ends at $j$.
+* Laplacians
+- $D$ is the degree matrix of a graph: $D_{u,u}= \deg u$, and $A$ is the adjacency matrix, with $A_{u,v}=w_{u,v}$
+- Quadratic Form of a matrix: $\inner{x}{Ax}$ or $x^TAx$.
+- $L=D-A$, so $L_{u,v}=-w_{u,v}$ if edge $u,v$ exists and $L_{u,u}=\deg u$  along the diagonals. It encodes both the degree and adjacency matrices.
+- It can also be decomposed into a sum of simpler matrices  $\sum_{u,v \in E}L_{u,v}$,
+- $\inner{x}{Lx}=\sum_{u,v \in E} w_{u,v}(x_u-x_v)^2$, a useful result for later.
+- If we consider $\L = D^{-\frac12}LD^{-\frac12}$, we notice that all of its entries are between $-1$ and $1$. If $G$ is $d$ regular, $\L=\frac{1}{d}L$
+** COMMENT Boardwork
+- $M=L_{u,v}$ has $M_{u,u}=M_{v,v}=w_{u,v}$ and $M_{u,v}=M_{v,u}=-w_{u,v}$.
+- For a vector $x$, $Lx=\sum_{u,v \in E}L_{u,v}x$, so $(Lx)_u=w_{u,v}(x_u-x_v)$ and $(Lx)_v=w_{u,v}(x_v-x_u)$.
+- Corollary: $\inner{x}{Lx}=0$ iff each individual $(x_u-x_v)^2=0$ for connected vertices $u,v$, hence the cool fact about multiplicity of $0$.
+* Conductance
+- The /conductance/ of a subgraph (precisely, a subset of vertices) $S$ measures how connected $S$ is to the rest of the graph.
+- $\Phi(S)=\frac{|E(S,V-S)|}{Vol(S)}$
+- The conductance of the graph  is just $\Phi_G=\min_{S \subset V} \Phi(S)$, it measures the conductance of the most ``island-y'' subgraph (most disconnected from the rest of the graph).
+- If we take a subset of vertices $S$ and write it as an indicator vector $x_S$, $\Phi(S)=\frac{\inner{x_s}{Lx_s}}{\sum_{i \in V}\deg i x_s(i)^2}= \frac{\inner{x_s}{Lx_s}}{d \inner{x_s}{x_s}}$.
+# - Denominator pulls out the diagonal (which is just the degree matrix $D$) and so summing over computes the volume of $S$.
+- Numerator works out as a result of symmetry: $x_u$ and $x_v$ cancel out if both are in $S$, so only edges counted are those between $S$ and $V-S$.
+- So $\Phi_G$ is the result of minimising this over all indicator vectors, i.e over $\{0,1\}^n$.
+** COMMENT Boardwork
+- Demonstrate briefly why the numerator works out.
+* Cheeger's Inequality
+- $\inner{x}{\L x}=\inner{x}{\sum_i \lambda_i\inner{\L x}{e_i}e_i}=\sum_i \lambda_i\inner{\L x}{e_i}^2 \le \lambda_1 \norm{x}$. So quadratic forms are bounded by minimum and maximum eigenvalues.
+- $\L D^{\frac12}\textbf{1}=L \textbf{1}=0$ always holds, since each row sums to $0$. So $D^{\frac12}\textbf{1}$ is always an eigenvector of $\L$ with eigenvalue $0$.
+- $\L$ is also invariant over the orthogonal complement of $\span(\textbf{1})$, so if we restrict ourselves to $U=\perpspace{\textbf{1}}$, $\min_{u \in U}\frac{\inner{x}{\L x}}{\inner{x}{x}}=\lambda_2$.
+- So $\lambda_2=\min_{u \in U}\frac{\inner{x}{Lx}}{d\inner{x}{x}}$
+- Both of these are optimisation problems with the same objective, and $\lambda_2$ is a relaxed version of $\Phi_G$ (we optimise over all vectors, not just indicators).
+- Cheeger's inequality formalises this similarity, stating that $2 \Phi_G \ge \lambda_2 \ge \frac{\Phi_{G}^{2}}{2}$.
+** COMMENT Boardwork
+- $\inner{x}{\L x}=\frac{\inner{x}{Lx}}{d}$
+# - Second eigenvalue as optimisation problem: Courant-fischer or Rayleigh
+# - Intuition: Second eigenvalue is a relaxed version of the conductance problem, so we expect correlation.
+* Cheeger's: Easy Direction
+- Let $S \subseteq V$ be a set of vertices. Define our `indicator' vector $x_S$ to have $x_s(i)=\frac{1}{|S|}$ if $i \in S$, else $x_s(i)=\frac{-1}{|V-S|}$
+- $\lambda_2 \le \frac{\inner{x_s}{Lx_S}}{d\inner{x_S}{x_S}} \le 2\phi_G$.
+** COMMENT Boardwork
+- Show the expansion of the quadform
+- Recall boundary defn
+- $\frac{|\delta(S)|(\frac{1}{|S|}+\frac{1}{|V-S|})^2}{d(|S|\frac{1}{|S|^2}+|V-S|\frac{1}{|V-S|^2})}$
+- $\frac{|\delta(S)|}{d|S|} \frac{|V|}{|V-S|}$ and $vol(S)=d|S|$.
+- $|V|/|V-S| \le 2$ by assumption that $|S| \le |V|/2$.
+* Random Walk
+- Suppose we have a $d$ regular graph. The random walk matrix is $\frac{1}{d}A$, and so $(A/d)^n$ gives the distribution of a random walk after $n$ steps.
+- $\L=\frac{1}{d}(I-A)=\frac{1}{d}(L)=\frac{I}{d}-\frac{A}{d}$.
+  # where $R$ is a diagonal matrix with the eigenvalues of $A/d$ in descending order. Let $\lambda_n$ be the highest eigenvalue.
+- Suppose $A/d=U^{-1}RU$. Then if $\lambda_{n-1}$ is small, it goes to $0$ as we take powers, leaving $\lambda_n=1$ so random walk is uniform.
+- The eigenvalues of $\L$ are related to negatives of the eigenvalues of $A/d$. So if $\lambda_2$ of $\L$ is large, $\lambda_{n-1}$ of $A/d$ is small and so the random walk is uniform. We can see why that makes it a good expander.
+- So if $\lambda_2$ is high, it means it is `easy' to walk from any vertex to any other vertex in a fairly short number of steps, and that all vertices are (roughly) equally easy to get to - which matches up with our intuitions about good sparsifiers.
+# 6.1,3,4 important after this.
+* Paper and Results
+- /Spectral Sparsification of Graphs/ by Daniel A. Spielman and Shang-Hua Teng
+- Spectral Approximation: Quadratic forms are bounded by $\frac{1}{\sigma}\inner{x}{L_{\tilde{G}}x} \le \inner{x}{L_Gx} \le \sigma\inner{x}{L_{\tilde{G}}x}$.
+- For every $G$, we can find a sparsifier $\tilde{G}$ with $\O(n/\epsilon^2)$ edges that is a $(1+\epsilon)$ spectral approximation of $G$.
+- Their algorithm takes $\O(m)$ time, where $m=|E|$.
+* Preserving Expected Quadratic Forms
+- If we select edge with probability $p_{u,v}$, and assign it weight $1/p_{u,v}$ in our sparsified graph, $\E[\inner{x}{Lx}]=\E[\inner{x}{\tilde{L}x}]$.
+- We can see this from decomposing $L=\sum_{u,v \in E}L_{u,v}$ so $\E[\tilde{L}]=\sum_{u,v \in E}p_{u,v}L_{u,v}$: Dividing by $p_{u,v}$ undoes the effect of the probability of dropping it.
+- Problem is now assigning $p_{u,v}$ in a way that preserves extremal quadratic forms, at least with high probability.
+* Spectral vs Cut Sparsifiers :ATTACH:
+:PROPERTIES:
+:ID:       aa903b04-687a-4a53-94a9-f0da6f4e9ecb
+:END:
+- Intuitively, a good sparsifier should preserve `important' edges, such as if there is one edge which connects two otherwise-distant vertices.
+
+- Spectral Sparsifiers are sensitive to that distance concept, while other kinds of sparsifiers like cut sparsifiers aren't.
+
+- One way we translate that intuition is by making the probability of $\{i,j\}$ being included proportional to  $\frac{1}{\min(\deg i, \deg j)}$. In fact, this is actually one of the methods the main sampling algorithm uses.
+
+  [[attachment:_20221121_1439161669070186.png]]
+* Overview of Algorithm
+- $p_{i,j}=\min(1,\frac{\gamma}{\min(d_i,d_j)})$.
+- $\gamma$ is defined in terms of our tolerances (of quality of sparsifier and probability of success), and also inversely proportional to $\lambda_2^2$. Intuition - highly connected graphs can survive more `aggressive' sparsification.
+- Show that if $||D^{-\frac12}(L-\tilde{L}) D^{-\frac12}||$ is small and $\lambda_2$ is large, $\tilde{G}$ is a good spectral approximation for $G$.
+- Show that this sparsifier gives us $||D^{-\frac12}(\tilde{D}-D)D^{-\frac12}||$ and $||D^{-\frac12}(\tilde{A}-A)D^{-\frac12}||$ small with high probability
+- So by triangle inequality $||D^{-\frac12}(L-\tilde{L}) D^{-\frac12}||$ is small with high probability.
+* Small Laplacian Difference $\Rightarrow$ Good Spectral Approximation (Lemma 6.2)
+- If Laplacian difference $||D^{-\frac12}(L-\tilde{L}) D^{-\frac12}|| \le \epsilon$ and $\lambda_2(D^{-\frac12}L D^{-\frac12}) \ge \lambda$, $\tilde{G}$ is a $\sigma = \frac{\lambda}{\lambda-\epsilon}$ spectral approximation.
+- For $d$ regular graphs, we have $\frac{1}{d}||(L-\tilde{L})|| \le \epsilon$, and $\lambda_2(L)=d \cdot \lambda_2(\L) \ge d \cdot \lambda$
+- We can split $x$ up into $u$ parallel to $\textbf{1}$ and $v$ orthogonal to it and use the fact $\inner{v}{Lv} \ge d \cdot \lambda$ (since quadforms are bounded by eigenvalues)
+- In the regular case, a good intuition is that if the spectrum of $L-\tilde{L}$ has small eigenvalues $(\le \epsilon)$, then their quadratic forms behave similarly.
+- As we increase $\lambda$ our bound gets tighter, reflecting that highly-connected graphs are easier to sparsify well.
+- TODO Think about intuition/interpretation.
+** COMMENT Boardwork
+- $x=u+v$ where $u \in \span(\textbf{1})$ and $v \in \perpspace{\textbf{1}}$, and $\inner{x}{Lx}=\inner{u+v}{Lu}+\inner{u+v}{Lv}=\inner{v}{Lv}$.
+- $v \perp \textbf{1}$ so $\inner{v}{Lv} \ge \lambda_2(L) \ge \lambda$
+- $\inner{v}{Lv}-\inner{v}{\tilde{L}v} \le d\epsilon$.
+- Dividing, $\frac{\inner{x}{Lx}-d\epsilon}{\inner{x}{Lx}} \le \frac{\inner{x}{\tilde{L}x}}{\inner{x}{Lx}}$
+- Since ${\inner{x}{Lx}} \ge d \lambda$ we substitute (and flip the inequality) so $\frac{\lambda-\epsilon}{\lambda}\le\frac{\inner{x}{\tilde{L}x}}{\inner{x}{Lx}}$
+
+# - If $y=D^{\frac12}x$, $\inner{x,Lx}=\inner{D^{-\frac12}y}{L(D^{-\frac12}y)}$.
+# - Take $z$ to be component of $y$ orthogonal to $D^{\frac12}\textbf{1}$, so $\inner{x}{Lx}=\inner{D^{-\frac12}z}{L(D^{-\frac12}z)}$ since $L\textbf{1}=0$
+# - $\inner{x}{\tilde{L}x}=\inner{D^{-\frac12}z}{\tilde{L}(D^{-\frac12}z)}$, which we can show satisfies the bounds.
+* TODO $||D^{-\frac12}(A-\tilde{A}) D^{-\frac12}||$ is Small (Lemma 6.3-4)
+- Since the norm is just the highest eigenvalue, it instead bounds the trace (product of eigenvalues) of $\Delta= D^{-1}(\tilde{A}-A)$.
+- Idea from earlier: Random walk matrix encodes probability of walking from $v_0$ to $v_k$. Still applies here in some form .
+- For a given walk $v_0,v_1,\cdots v_k$, its probability is nonzero iff all of the necessary edges are included in $A$, so each significant sequence is analogous to a walk $v_0, \cdots, v_k$ on $A$.
+- $\E[\Delta_{v_i,v_j}]=0$ from the definition. $\Delta_{v_i,v_j}$ is independent of all others except $\Delta_{v_j,v_i}$. So we can split $\E[\Pi_{i=1}^k \Delta_{v_{i-1},v_i}]$ into independent pairs $E[\Delta_{v_i,v_{i+1}}\Delta_{v_{i+1},v_i}]$, so a walk has nonzero contribution only if each edge appears at least twice (i.e $\Delta_{v_i,v_{i+1}}\Delta_{v_{i+1},v_i} \ne 0$).
+- They use an ingenious method to bound the number of such walks.
+- Counting edge occurences is an iconic proof
+** COMMENT Boardwork
+- Draw walks with zero and nonzero contribution.
+- Use that to describe the proof.
+- For delta obeying randwalk facts, use the trick about sticking identities everywhere and juggling.
+- If you expand (A+B)^k, standard binomial.
+  With each step, choose to walk on A or walk on B
+- If we walk on (A-B)^k, - when odd steps on B.
+# Focus more on how they develop the proof, and the ideas of independence and including-twice. Then the actual method of identifying edges with walks can be brushed over.
+* $||D^{-\frac12}(D-\tilde{D}) D^{-\frac12}||$ is Probably Small (Lemma 6.7)
+- The probability that $||D^{-\frac12}(D-\tilde{D})D^{-\frac12}|| \ge \epsilon$ is proportional to $e^{-\epsilon^2}$.
+- The norm of a diagonal matrix is just it's largest entry, and $D^{-1}(\tilde{D}-D)_{i,i}=1-\frac{\tilde{d}_i}{d_i}$.
+- $\E[\tilde{d}_i]=d_i$, and $\tilde{d_i}$ decomposes into a sum of independent $d_i$ indicator variables.
+- So we can apply the Chernoff bound to the probability that $\tilde{d}_i-d_i > \epsilon d_i$ for a given $i$ and then use union bound to show that the probability of this occuring for any $i$ is small.
+* High-Conductance Subgraphs Exist (Theorem 7.1)
+- We can always find a reasonably large subgraph with fairly high conductance.
+- From that fact, it follows that we can partition a graph into high-conductance components, by repeatedly extracting these subgraphs.
+- Let $S$ be the largest set with $\Phi_B(S) \le \phi$, for some $B \subseteq V$. If $S$ is small with $Vol(S) = a Vol(B)$ with $a\le 1/3$, then $\Phi_{B-S} \ge \phi(\frac{1-3a}{1-a})$
+- Consider the minimal-conductance subgraph $R$ of the graph $B-S$. Suppose it has conductance $\Phi_{B-S}(R) < \phi (\frac{1-3a}{1-a})$.
+- Let $T= R \cup S$ so $vol(T) > vol(S)$.
+- Either $\phi_B(T) \le \phi_B(S)$ or $\phi_B(B-T) \le \phi_B(S)$, contradiction.
+# - If $T$ is small ($vol(T) \le \frac12 vol(B)$), then $T$ has conductance $\le \phi$, so $S$ is not the largest such set.
+# - If $vol(T) > \frac12 vol(B)$, we can show $B-T$ has conductance $\le \phi$ and $vol(B-T) > vol(S)$, contradiction.
+# where the edges between subgraphs make up a small fraction of the total volume.
+** COMMENT Boardwork
+- $b=(\frac{1-3a}{1-a})$, and $a \le 1/3$ so $b \in [0,1]$
+- $|E(T,B-T)| \le |E(S,B-S)|+|E(R,B-S-R)| < \phi vol(S)+ (\phi b)vol(R)$
+- $E(T,B-T) < \phi(vol(S)+vol(R))=\phi vol(T)$ so if $T$ is small $min(T,B-T)=T$, $\Phi_B^G(T) < \phi$.
+- Other case is more complicated but follows from the same inequalities. We can bound $vol(T)$ using the bound $vol(R) \le vol(B-S)/2$.
+- If $T$ is big, $vol(T) \le vol(S)+(1/2)(vol(B)-vol(S))=(1/2)(vol(B)+vol(S))=\frac{1+a}{2}vol(B)$.
+- So $|E(T,B-T)| \le \phi vol(S)+ (\phi b)vol(R) \le \phi vol(S)+ (\phi b)(vol(B)-vol(S))/2 = \phi vol(B)(a+b(1-a)/2)$.
+
+
+* COMMENT Sparsifying Arbitrary Graphs (Section 8-10)
+- These deal with approximating this optimal partition, and using that to sparsify arbitrary weighted and unweighted graphs.
+- It's mainly extending the ideas from sections 6 and 7 in routine ways.
+- In general, if we union high-conductance subgraphs, the resulting subgraph has (with high probability) higher conductance.
+- So the algorithm they use calls a /Partition/ algorithm to find high-conductance subgraphs, and unions the resulting subgraphs together to improve the conductance.
+* TODO COMMENT
+- Focus on pictures more. Draw things like conductance.
