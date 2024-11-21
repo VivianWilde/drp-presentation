@@ -1,5 +1,6 @@
 #+title: DRP Presentation: Spectral Graph Theory
 #+latex_header: \usepackage{header}
+#+latex_class: beamer
 * Expander Graphs
 - Expanders are sparse highly-connected graphs.
 - Constant degree ($k$ regular, or close to that)

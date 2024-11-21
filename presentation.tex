@@ -1,6 +1,6 @@
-% Created 2024-11-20 Wed 18:24
+% Created 2024-11-20 Wed 18:26
 % Intended LaTeX compiler: pdflatex
-\documentclass[11pt]{article}
+\documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -14,6 +14,7 @@
 \usepackage{hyperref}
 \usepackage{minted}
 \usepackage{header}
+\usetheme{default}
 \author{Vivien Goyal}
 \date{\today}
 \title{DRP Presentation: Spectral Graph Theory}
@@ -27,33 +28,34 @@
 \begin{document}
 
 \maketitle
+\begin{frame}{Outline}
 \tableofcontents
+\end{frame}
 
-\section{Expander Graphs}
-\label{sec:org2528b89}
+\begin{frame}[label={sec:orgbe1cffc}]{Expander Graphs}
 \begin{itemize}
 \item Expanders are sparse highly-connected graphs.
 \item Constant degree (\(k\) regular, or close to that)
 \item An expander graph on \(n\) vertices has \(O(n)\) edges and diameter \(O(log(n))\).
 \item Sparsification is the problem of how can we remove edges from a graph while retaining high conductance - i.e, the process of turning non-expander graphs into expander graphs.
 \end{itemize}
-\section{Spectral Graph Theory}
-\label{sec:org57f55c7}
+\end{frame}
+\begin{frame}[label={sec:org6fd8822}]{Spectral Graph Theory}
 \begin{itemize}
 \item A graph is an adjacency matrix with real-valued entries.
 \item Undirected graphs have symmetric matrices, so spectral theorem applies and we have a basis of eigenvectors.
 \item We can encode a graph as a matrix and then analyse the spectrum (eigenvals/eigenvecs )
 \end{itemize}
-\section{Eigenvalues, Connected Components, and Random Walks}
-\label{sec:org92f63dc}
+\end{frame}
+\begin{frame}[label={sec:org516143a}]{Eigenvalues, Connected Components, and Random Walks}
 \begin{itemize}
 \item The multiplicity of the \(0\) eigenvalue measures the number of connected components.
 \item \(Lx=0\) requires \(x_i=x_j\) whenever \(i,j\) in the same component, and an orthogonal set of (nonzero) vectors which all satisfy this are the indicator vectors for the connected components.
 \item Adjacency matrix (divided by degree) raised to powers gets you the random walk distribution.
 \item So if \(R=D^{-1}A\), \(R^k_{i,j}\) is the probability that a \(k\) step walk from \(i\) ends at \(j\).
 \end{itemize}
-\section{Laplacians}
-\label{sec:orgb93d19c}
+\end{frame}
+\begin{frame}[label={sec:org6d51ab1}]{Laplacians}
 \begin{itemize}
 \item \(D\) is the degree matrix of a graph: \(D_{u,u}= \deg u\), and \(A\) is the adjacency matrix, with \(A_{u,v}=w_{u,v}\)
 \item Quadratic Form of a matrix: \(\inner{x}{Ax}\) or \(x^TAx\).
@@ -62,8 +64,8 @@
 \item \(\inner{x}{Lx}=\sum_{u,v \in E} w_{u,v}(x_u-x_v)^2\), a useful result for later.
 \item If we consider \(\L = D^{-\frac12}LD^{-\frac12}\), we notice that all of its entries are between \(-1\) and \(1\). If \(G\) is \(d\) regular, \(\L=\frac{1}{d}L\)
 \end{itemize}
-\section{Conductance}
-\label{sec:org218eb03}
+\end{frame}
+\begin{frame}[label={sec:org7f51f79}]{Conductance}
 \begin{itemize}
 \item The \emph{conductance} of a subgraph (precisely, a subset of vertices) \(S\) measures how connected \(S\) is to the rest of the graph.
 \item \(\Phi(S)=\frac{|E(S,V-S)|}{Vol(S)}\)
@@ -75,8 +77,8 @@
 \item Numerator works out as a result of symmetry: \(x_u\) and \(x_v\) cancel out if both are in \(S\), so only edges counted are those between \(S\) and \(V-S\).
 \item So \(\Phi_G\) is the result of minimising this over all indicator vectors, i.e over \(\{0,1\}^n\).
 \end{itemize}
-\section{Cheeger's Inequality}
-\label{sec:orgef92cb2}
+\end{frame}
+\begin{frame}[label={sec:orgd2dbab9}]{Cheeger's Inequality}
 \begin{itemize}
 \item \(\inner{x}{\L x}=\inner{x}{\sum_i \lambda_i\inner{\L x}{e_i}e_i}=\sum_i \lambda_i\inner{\L x}{e_i}^2 \le \lambda_1 \norm{x}\). So quadratic forms are bounded by minimum and maximum eigenvalues.
 \item \(\L D^{\frac12}\textbf{1}=L \textbf{1}=0\) always holds, since each row sums to \(0\). So \(D^{\frac12}\textbf{1}\) is always an eigenvector of \(\L\) with eigenvalue \(0\).
@@ -85,14 +87,14 @@
 \item Both of these are optimisation problems with the same objective, and \(\lambda_2\) is a relaxed version of \(\Phi_G\) (we optimise over all vectors, not just indicators).
 \item Cheeger's inequality formalises this similarity, stating that \(2 \Phi_G \ge \lambda_2 \ge \frac{\Phi_{G}^{2}}{2}\).
 \end{itemize}
-\section{Cheeger's: Easy Direction}
-\label{sec:orgf0982a0}
+\end{frame}
+\begin{frame}[label={sec:orgaf6acc1}]{Cheeger's: Easy Direction}
 \begin{itemize}
 \item Let \(S \subseteq V\) be a set of vertices. Define our `indicator' vector \(x_S\) to have \(x_s(i)=\frac{1}{|S|}\) if \(i \in S\), else \(x_s(i)=\frac{-1}{|V-S|}\)
 \item \(\lambda_2 \le \frac{\inner{x_s}{Lx_S}}{d\inner{x_S}{x_S}} \le 2\phi_G\).
 \end{itemize}
-\section{Random Walk}
-\label{sec:org0686358}
+\end{frame}
+\begin{frame}[label={sec:org04ef2bf}]{Random Walk}
 \begin{itemize}
 \item Suppose we have a \(d\) regular graph. The random walk matrix is \(\frac{1}{d}A\), and so \((A/d)^n\) gives the distribution of a random walk after \(n\) steps.
 \item \(\L=\frac{1}{d}(I-A)=\frac{1}{d}(L)=\frac{I}{d}-\frac{A}{d}\).
@@ -100,23 +102,23 @@
 \item The eigenvalues of \(\L\) are related to negatives of the eigenvalues of \(A/d\). So if \(\lambda_2\) of \(\L\) is large, \(\lambda_{n-1}\) of \(A/d\) is small and so the random walk is uniform. We can see why that makes it a good expander.
 \item So if \(\lambda_2\) is high, it means it is `easy' to walk from any vertex to any other vertex in a fairly short number of steps, and that all vertices are (roughly) equally easy to get to - which matches up with our intuitions about good sparsifiers.
 \end{itemize}
-\section{Paper and Results}
-\label{sec:org875aa3b}
+\end{frame}
+\begin{frame}[label={sec:org817c3fe}]{Paper and Results}
 \begin{itemize}
 \item \emph{Spectral Sparsification of Graphs} by Daniel A. Spielman and Shang-Hua Teng
 \item Spectral Approximation: Quadratic forms are bounded by \(\frac{1}{\sigma}\inner{x}{L_{\tilde{G}}x} \le \inner{x}{L_Gx} \le \sigma\inner{x}{L_{\tilde{G}}x}\).
 \item For every \(G\), we can find a sparsifier \(\tilde{G}\) with \(\O(n/\epsilon^2)\) edges that is a \((1+\epsilon)\) spectral approximation of \(G\).
 \item Their algorithm takes \(\O(m)\) time, where \(m=|E|\).
 \end{itemize}
-\section{Preserving Expected Quadratic Forms}
-\label{sec:orgd9c2dc6}
+\end{frame}
+\begin{frame}[label={sec:org5373ec5}]{Preserving Expected Quadratic Forms}
 \begin{itemize}
 \item If we select edge with probability \(p_{u,v}\), and assign it weight \(1/p_{u,v}\) in our sparsified graph, \(\E[\inner{x}{Lx}]=\E[\inner{x}{\tilde{L}x}]\).
 \item We can see this from decomposing \(L=\sum_{u,v \in E}L_{u,v}\) so \(\E[\tilde{L}]=\sum_{u,v \in E}p_{u,v}L_{u,v}\): Dividing by \(p_{u,v}\) undoes the effect of the probability of dropping it.
 \item Problem is now assigning \(p_{u,v}\) in a way that preserves extremal quadratic forms, at least with high probability.
 \end{itemize}
-\section{Spectral vs Cut Sparsifiers\hfill{}\textsc{ATTACH}}
-\label{sec:org42a440b}
+\end{frame}
+\begin{frame}[label={sec:org6f4c4bc}]{Spectral vs Cut Sparsifiers}
 \begin{itemize}
 \item Intuitively, a good sparsifier should preserve `important' edges, such as if there is one edge which connects two otherwise-distant vertices.
 
@@ -128,8 +130,8 @@
 \includegraphics[width=.9\linewidth]{/home/vivien/org/.attach/aa/903b04-687a-4a53-94a9-f0da6f4e9ecb/_20221121_1439161669070186.png}
 \end{center}
 \end{itemize}
-\section{Overview of Algorithm}
-\label{sec:org11a6519}
+\end{frame}
+\begin{frame}[label={sec:org14665ea}]{Overview of Algorithm}
 \begin{itemize}
 \item \(p_{i,j}=\min(1,\frac{\gamma}{\min(d_i,d_j)})\).
 \item \(\gamma\) is defined in terms of our tolerances (of quality of sparsifier and probability of success), and also inversely proportional to \(\lambda_2^2\). Intuition - highly connected graphs can survive more `aggressive' sparsification.
@@ -137,8 +139,8 @@
 \item Show that this sparsifier gives us \(||D^{-\frac12}(\tilde{D}-D)D^{-\frac12}||\) and \(||D^{-\frac12}(\tilde{A}-A)D^{-\frac12}||\) small with high probability
 \item So by triangle inequality \(||D^{-\frac12}(L-\tilde{L}) D^{-\frac12}||\) is small with high probability.
 \end{itemize}
-\section{Small Laplacian Difference \(\Rightarrow\) Good Spectral Approximation (Lemma 6.2)}
-\label{sec:org42a56af}
+\end{frame}
+\begin{frame}[label={sec:org35dfe09}]{Small Laplacian Difference \(\Rightarrow\) Good Spectral Approximation (Lemma 6.2)}
 \begin{itemize}
 \item If Laplacian difference \(||D^{-\frac12}(L-\tilde{L}) D^{-\frac12}|| \le \epsilon\) and \(\lambda_2(D^{-\frac12}L D^{-\frac12}) \ge \lambda\), \(\tilde{G}\) is a \(\sigma = \frac{\lambda}{\lambda-\epsilon}\) spectral approximation.
 \item For \(d\) regular graphs, we have \(\frac{1}{d}||(L-\tilde{L})|| \le \epsilon\), and \(\lambda_2(L)=d \cdot \lambda_2(\L) \ge d \cdot \lambda\)
@@ -146,8 +148,8 @@
 \item In the regular case, a good intuition is that if the spectrum of \(L-\tilde{L}\) has small eigenvalues \((\le \epsilon)\), then their quadratic forms behave similarly.
 \item As we increase \(\lambda\) our bound gets tighter, reflecting that highly-connected graphs are easier to sparsify well.
 \end{itemize}
-\section{\(||D^{-\frac12}(A-\tilde{A}) D^{-\frac12}||\) is Small (Lemma 6.3-4)}
-\label{sec:orga81feeb}
+\end{frame}
+\begin{frame}[label={sec:orgd057683}]{\(||D^{-\frac12}(A-\tilde{A}) D^{-\frac12}||\) is Small (Lemma 6.3-4)}
 \begin{itemize}
 \item Since the norm is just the highest eigenvalue, it instead bounds the trace (product of eigenvalues) of \(\Delta= D^{-1}(\tilde{A}-A)\).
 \item Idea from earlier: Random walk matrix encodes probability of walking from \(v_0\) to \(v_k\). Still applies here in some form .
@@ -155,16 +157,16 @@
 \item \(\E[\Delta_{v_i,v_j}]=0\) from the definition. \(\Delta_{v_i,v_j}\) is independent of all others except \(\Delta_{v_j,v_i}\). So we can split \(\E[\Pi_{i=1}^k \Delta_{v_{i-1},v_i}]\) into independent pairs \(E[\Delta_{v_i,v_{i+1}}\Delta_{v_{i+1},v_i}]\), so a walk has nonzero contribution only if each edge appears at least twice (i.e \(\Delta_{v_i,v_{i+1}}\Delta_{v_{i+1},v_i} \ne 0\)).
 \item They use an ingenious method to bound the number of such walks.
 \end{itemize}
-\section{\(||D^{-\frac12}(D-\tilde{D}) D^{-\frac12}||\) is Probably Small (Lemma 6.7)}
-\label{sec:org6f32804}
+\end{frame}
+\begin{frame}[label={sec:org39d62aa}]{\(||D^{-\frac12}(D-\tilde{D}) D^{-\frac12}||\) is Probably Small (Lemma 6.7)}
 \begin{itemize}
 \item The probability that \(||D^{-\frac12}(D-\tilde{D})D^{-\frac12}|| \ge \epsilon\) is proportional to \(e^{-\epsilon^2}\).
 \item The norm of a diagonal matrix is just it's largest entry, and \(D^{-1}(\tilde{D}-D)_{i,i}=1-\frac{\tilde{d}_i}{d_i}\).
 \item \(\E[\tilde{d}_i]=d_i\), and \(\tilde{d_i}\) decomposes into a sum of independent \(d_i\) indicator variables.
 \item So we can apply the Chernoff bound to the probability that \(\tilde{d}_i-d_i > \epsilon d_i\) for a given \(i\) and then use union bound to show that the probability of this occuring for any \(i\) is small.
 \end{itemize}
-\section{High-Conductance Subgraphs Exist (Theorem 7.1)}
-\label{sec:org780d229}
+\end{frame}
+\begin{frame}[label={sec:org4d5a574}]{High-Conductance Subgraphs Exist (Theorem 7.1)}
 \begin{itemize}
 \item We can always find a reasonably large subgraph with fairly high conductance.
 \item From that fact, it follows that we can partition a graph into high-conductance components, by repeatedly extracting these subgraphs.
@@ -173,12 +175,13 @@
 \item Let \(T= R \cup S\) so \(vol(T) > vol(S)\).
 \item Either \(\phi_B(T) \le \phi_B(S)\) or \(\phi_B(B-T) \le \phi_B(S)\), contradiction.
 \end{itemize}
-\section{Sparsifying Arbitrary Graphs (Section 8-10)}
-\label{sec:org63f34ed}
+\end{frame}
+\begin{frame}[label={sec:org7ac74f5}]{Sparsifying Arbitrary Graphs (Section 8-10)}
 \begin{itemize}
 \item These deal with approximating this optimal partition, and using that to sparsify arbitrary weighted and unweighted graphs.
 \item It's mainly extending the ideas from sections 6 and 7 in routine ways.
 \item In general, if we union high-conductance subgraphs, the resulting subgraph has (with high probability) higher conductance.
 \item So the algorithm they use calls a \emph{Partition} algorithm to find high-conductance subgraphs, and unions the resulting subgraphs together to improve the conductance.
 \end{itemize}
+\end{frame}
 \end{document}
